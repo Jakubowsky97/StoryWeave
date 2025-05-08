@@ -24,4 +24,15 @@
         android:text="Game"
         android:layout_gravity="bottom"
         android:textSize="30sp"/>
+    <TextView
+        android:id="@+id/textcopy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Copy test"
+        android:textSize="30sp"/>
+    <Button
+        android:id="@+id/button_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Copy to clipboard"/>
 </LinearLayout>
