@@ -16,6 +16,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        //main menu button**************************
         btnnext = findViewById(R.id.button_next);
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,5 +28,6 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //main menu button**************************
     }
 }
