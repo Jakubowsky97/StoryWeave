@@ -2,19 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground"
     android:padding="24dp"
     android:layout_marginTop="24dp"
     >
 
     <TextView
-        android:id="@+id/loginTitle"
+        android:id="@+id/registerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login to StoryWeave"
+        android:text="Create Account for StoryWeave"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="?attr/colorOnBackground"
@@ -31,7 +29,7 @@
         android:textColor="?attr/colorOnBackground"
         android:textColorHint="?attr/colorOnBackground"
         android:backgroundTint="?attr/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/loginTitle"
+        app:layout_constraintTop_toBottomOf="@id/registerTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
@@ -61,11 +59,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/passwordEditText" />
 
+
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/registerButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Sign Up"
         android:backgroundTint="?attr/colorPrimary"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/passwordEditText"
@@ -74,35 +73,13 @@
         android:layout_marginTop="24dp" />
 
     <TextView
-        android:id="@+id/textOR"
+        android:id="@+id/loginRedirectText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OR"
-        app:layout_constraintTop_toBottomOf="@id/loginButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
-        />
-
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleSignInButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textOR" />
-
-    <TextView
-        android:id="@+id/registerRedirectText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="You don't have an account? Register here"
+        android:text="You already have an account? Login here"
         android:textColor="?attr/colorSecondary"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/googleSignInButton"
+        app:layout_constraintTop_toBottomOf="@id/registerButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
