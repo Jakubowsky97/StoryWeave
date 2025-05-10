@@ -1,7 +1,6 @@
 package com.example.storyweave.ui.create;
 
 
-import android.app.Application;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.Context;
@@ -18,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.storyweave.GameActivity;
+import com.example.storyweave.game.GameActivity;
 import com.example.storyweave.R;
 import com.example.storyweave.databinding.FragmentCreateBinding;
 
@@ -83,6 +82,7 @@ public class CreateFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+    //random code****************************
     public static String generateSixDigitCode(){
 
         String code = "";
@@ -102,4 +102,6 @@ public class CreateFragment extends Fragment {
         }
         return code;
     }
+    //random code****************************
+
 }
