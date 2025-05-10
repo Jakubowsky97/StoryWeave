@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "411039187505",
+    "project_id": "story-weave-66f4a",
+    "storage_bucket": "story-weave-66f4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411039187505:android:53ab672f85aa1dfcbc4b10",
+        "android_client_info": {
+          "package_name": "com.example.storyweave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411039187505-569pdn0bnkd5ptbes5sikspm8lgr24aq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.storyweave",
+            "certificate_hash": "44500b55b9b4f121bfdae9d3dea2cdf42fc5e439"
+          }
+        },
+        {
+          "client_id": "411039187505-15msbf9lgkn5rohflsq37dan2khcrhr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADAJBMF3AqnaVOAlWAoBT1jfGzjv7KUHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411039187505-15msbf9lgkn5rohflsq37dan2khcrhr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
