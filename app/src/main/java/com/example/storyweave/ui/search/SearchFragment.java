@@ -33,6 +33,7 @@ public class SearchFragment extends Fragment {
         final TextView textView = binding.textSearch;
         searchViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+        //game button test********************************
         btngame = root.findViewById(R.id.button_game);
 
         btngame.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +42,7 @@ public class SearchFragment extends Fragment {
                 startActivity(new Intent(getActivity(), GameActivity.class));
             }
         });
+        //game button test********************************
         return root;
     }
 

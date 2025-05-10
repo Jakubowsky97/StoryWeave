@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInButton = findViewById(R.id.googleSignInButton);
         passwordToggle = findViewById(R.id.passwordToggle);
 
+
         passwordToggle.setOnClickListener(v -> {
             if (passwordVisible) {
                 passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
