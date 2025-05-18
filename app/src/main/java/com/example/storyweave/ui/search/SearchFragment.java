@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.storyweave.GameActivity;
+import com.example.storyweave.game.GameActivity;
 import com.example.storyweave.R;
 import com.example.storyweave.databinding.FragmentSearchBinding;
 

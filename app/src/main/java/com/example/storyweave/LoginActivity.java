@@ -33,7 +33,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
-    private Button loginButton;
+    private Button loginButton, skipButton;
     private SignInButton googleSignInButton;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -86,6 +86,15 @@ public class LoginActivity extends AppCompatActivity {
         TextView registerRedirectText = findViewById(R.id.registerRedirectText);
         registerRedirectText.setOnClickListener(v ->
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+
+        skipButton = findViewById(R.id.skipLogin);
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_game);
+            }
+        });
     }
 
     private void signInWithEmail() {
