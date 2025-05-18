@@ -25,6 +25,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -97,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
+                        Log.d("LoginActivity", "Zalogowano jako: " + user.getEmail());
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
@@ -125,9 +130,31 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        startActivity(new Intent(this, MainActivity.class));
-                        finish();
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            String userId = firebaseUser.getUid();
+                            String email = firebaseUser.getEmail();
+                            String name = firebaseUser.getDisplayName();
+                            String photoUrl = firebaseUser.getPhotoUrl() != null ? firebaseUser.getPhotoUrl().toString() : null;
+
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("email", email);
+                            user.put("username", name);
+                            user.put("profilePictureUrl", photoUrl);
+                            user.put("createdAt", System.currentTimeMillis());
+
+                            db.collection("users").document(userId)
+                                    .set(user)
+                                    .addOnSuccessListener(aVoid -> {
+                                        startActivity(new Intent(this, MainActivity.class));
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(this, "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+
                     } else {
                         Toast.makeText(this, "Google login failed", Toast.LENGTH_SHORT).show();
                     }
