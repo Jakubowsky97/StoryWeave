@@ -1,6 +1,8 @@
 package com.example.storyweave.ui.create;
 
 
+import static com.example.storyweave.game.GameCodeGenerator.generateSixDigitCode;
+
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.Context;
@@ -48,7 +50,7 @@ public class CreateFragment extends Fragment {
         btngame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), GameActivity.class));
+                getActivity().setContentView(R.layout.activity_game);
             }
         });
         //game button test********************************
@@ -82,26 +84,4 @@ public class CreateFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-    //random code****************************
-    public static String generateSixDigitCode(){
-
-        String code = "";
-        char[] uppercaseLetters = {
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-        };
-        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-
-        for (int i = 0; i < 6; i++){
-            Random random = new Random();
-            if (Math.round(random.nextDouble()) == 0){
-                code += uppercaseLetters[random.nextInt(uppercaseLetters.length)];
-            } else {
-                code += numbers[random.nextInt(numbers.length)];
-            }
-        }
-        return code;
-    }
-    //random code****************************
-
 }
