@@ -1,17 +1,17 @@
-package com.example.storyweave.game;
+package com.example.storyweave.lobby;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class GameValues {
+public class LobbyInformation {
     private String language;
-    private String code;
+    private String lobbycode;
     private String creatorUserId;
 
-    public GameValues(String language, String code) {
+    public LobbyInformation(String language, String code) {
         this.language = language;
-        this.code = code;
+        this.lobbycode = code;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             this.creatorUserId = user.getUid();
@@ -22,8 +22,8 @@ public class GameValues {
         return language;
     }
 
-    public String getCode() {
-        return code;
+    public String getLobbycode() {
+        return lobbycode;
     }
 
     public String getCreatorUserId() {
