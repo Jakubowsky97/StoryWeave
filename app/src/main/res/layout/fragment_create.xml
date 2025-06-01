@@ -1,38 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/createLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.create.CreateFragment">
+    android:orientation="vertical"
+    android:padding="24dp">
 
-    <TextView
-        android:id="@+id/text_create"
+    <EditText
+        android:id="@+id/inputTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
-    <Button
-        android:id="@+id/button_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Game"
-        android:layout_gravity="bottom"
-        android:textSize="30sp"/>
-    <TextView
-        android:id="@+id/textcopy"
+        android:hint="Story Title"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <EditText
+        android:id="@+id/inputDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Copy test"
-        android:textSize="30sp"/>
+        android:hint="Description (optional)"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:gravity="top"
+        android:layout_marginTop="16dp" />
+
     <Button
-        android:id="@+id/button_copy"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnCreate"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Copy to clipboard"/>
+        android:text="Create"
+        android:layout_marginTop="24dp" />
+
+    <LinearLayout
+        android:id="@+id/inviteCodeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="24dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/textInviteCode"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="CODE123"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnCopyCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Copy" />
+    </LinearLayout>
 </LinearLayout>
