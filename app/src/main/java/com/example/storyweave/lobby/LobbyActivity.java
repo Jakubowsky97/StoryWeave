@@ -26,7 +26,6 @@ public class LobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-
         buttonAddGameData = findViewById(R.id.buttonAddGameData);
         test = findViewById(R.id.test);
         if (buttonAddGameData == null) {

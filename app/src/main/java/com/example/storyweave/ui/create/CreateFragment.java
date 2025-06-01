@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.storyweave.game.GameActivity;
 import com.example.storyweave.R;
 import com.example.storyweave.databinding.FragmentCreateBinding;
+import com.example.storyweave.lobby.LobbyActivity;
 
 import java.util.Random;
 
@@ -43,14 +44,14 @@ public class CreateFragment extends Fragment {
         final TextView textView = binding.textCreate;
         createViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-
         //game button test********************************
         btngame = root.findViewById(R.id.button_game);
 
         btngame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().setContentView(R.layout.activity_game);
+                Intent intent = new Intent(getActivity(), LobbyActivity.class);
+                startActivity(intent);
             }
         });
         //game button test********************************
