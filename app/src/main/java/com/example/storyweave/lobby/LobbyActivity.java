@@ -1,53 +1,57 @@
 package com.example.storyweave.lobby;
 
-import static com.example.storyweave.game.GameCodeGenerator.generateSixDigitCode;
-
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.storyweave.R;
-import com.example.storyweave.game.GameActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.storyweave.story.StoryActivity;
 
 public class LobbyActivity extends AppCompatActivity {
-    Button buttonAddGameData;
 
-    TextView test;
+    private TextView textTitle, textType, textInviteCode;
+    private Button buttonCopy, buttonContinue;
+
+    private LobbyInformation lobbyInfo;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-        buttonAddGameData = findViewById(R.id.buttonAddGameData);
-        test = findViewById(R.id.test);
-        if (buttonAddGameData == null) {
-            Toast.makeText(LobbyActivity.this, "Nie znaleziono przycisku w layoucie!", Toast.LENGTH_LONG).show();
+        textTitle = findViewById(R.id.textTitle);
+        textType = findViewById(R.id.textType);
+        textInviteCode = findViewById(R.id.textInviteCode);
+        buttonCopy = findViewById(R.id.buttonCopy);
+        buttonContinue = findViewById(R.id.buttonContinue);
+
+        // Odebranie danych z intentu
+        lobbyInfo = (LobbyInformation) getIntent().getSerializableExtra("lobbyInfo");
+
+        if (lobbyInfo != null) {
+            textTitle.setText(lobbyInfo.getTitle());
+            textType.setText(lobbyInfo.isPrivate() ? "Private" : "Public");
+            textInviteCode.setText(lobbyInfo.getInviteCode());
+
+            buttonCopy.setOnClickListener(v -> {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Invite Code", lobbyInfo.getInviteCode());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(this, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+            });
+
+            buttonContinue.setOnClickListener(v -> {
+                Intent intent = new Intent(this, StoryActivity.class);
+                intent.putExtra("storyId", lobbyInfo.getStoryId());
+                startActivity(intent);
+            });
         }
-        buttonAddGameData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                test.setTextColor(getResources().getColor(R.color.purple_200));
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                LobbyInformation gm = new LobbyInformation("polish", generateSixDigitCode());
-                db.collection("games").document("a")
-                        .set(gm)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(LobbyActivity.this, "Succesfully created game", Toast.LENGTH_LONG).show();
-//                            setContentView(R.layout.GameActivity);
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(LobbyActivity.this, "Failed to create game: " + e.getMessage(), Toast.LENGTH_LONG).show();
-//                            setContentView(R.layout.LobbyActivity);
-                        });
-            }
-        });
     }
 }

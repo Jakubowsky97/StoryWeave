@@ -1,22 +1,91 @@
 package com.example.storyweave.ui.profile;
 
-import android.widget.ImageView;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.io.File;
-import java.sql.Date;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileViewModel extends ViewModel {
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<String> email = new MutableLiveData<>();
+    private final MutableLiveData<String> username = new MutableLiveData<>();
+    private final MutableLiveData<Integer> storiesCount = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> fragmentsCount = new MutableLiveData<>(0);
+    private final MutableLiveData<Boolean> loading = new MutableLiveData<>(true);
+    private final MutableLiveData<String> error = new MutableLiveData<>();
+
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public ProfileViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is profile fragment");
+        loadUserProfile();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    private void loadUserProfile() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            error.setValue("User not logged in");
+            loading.setValue(false);
+            return;
+        }
+
+        email.setValue(currentUser.getEmail());
+
+        // Pobierz dodatkowe dane użytkownika z Firestore (np. username)
+        db.collection("users").document(currentUser.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String uname = documentSnapshot.getString("username");
+                        username.setValue(uname != null ? uname : "Unknown");
+
+                        // Możesz tu dodać pobieranie statystyk z Firestore,
+                        // przykładowo liczba stworzonych historii i fragmentów:
+
+                        // Pobierz liczbę historii stworzonych przez użytkownika
+                        db.collection("stories")
+                                .whereEqualTo("ownerId", currentUser.getUid())
+                                .get()
+                                .addOnSuccessListener(querySnapshot -> {
+                                    storiesCount.setValue(querySnapshot.size());
+
+                                    // Pobierz liczbę fragmentów
+                                    db.collection("storyNodes")
+                                            .whereEqualTo("authorId", currentUser.getUid())
+                                            .get()
+                                            .addOnSuccessListener(nodesSnapshot -> {
+                                                fragmentsCount.setValue(nodesSnapshot.size());
+                                                loading.setValue(false);
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                error.setValue(e.getMessage());
+                                                loading.setValue(false);
+                                            });
+
+                                })
+                                .addOnFailureListener(e -> {
+                                    error.setValue(e.getMessage());
+                                    loading.setValue(false);
+                                });
+
+                    } else {
+                        username.setValue("Unknown");
+                        loading.setValue(false);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    error.setValue(e.getMessage());
+                    loading.setValue(false);
+                });
     }
+
+    public LiveData<String> getEmail() { return email; }
+    public LiveData<String> getUsername() { return username; }
+    public LiveData<Integer> getStoriesCount() { return storiesCount; }
+    public LiveData<Integer> getFragmentsCount() { return fragmentsCount; }
+    public LiveData<Boolean> getLoading() { return loading; }
+    public LiveData<String> getError() { return error; }
 }

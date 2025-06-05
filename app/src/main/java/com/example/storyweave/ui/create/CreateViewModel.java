@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.storyweave.model.Story;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Random;
@@ -14,6 +16,7 @@ import java.util.Random;
 public class CreateViewModel extends ViewModel {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
     private final MutableLiveData<Boolean> createSuccess = new MutableLiveData<>(false);
     private final MutableLiveData<String> generatedInviteCode = new MutableLiveData<>();
 
@@ -28,8 +31,11 @@ public class CreateViewModel extends ViewModel {
     public void createStory(String title, String description) {
         String inviteCode = generateInviteCode();
         generatedInviteCode.setValue(inviteCode);
+        mAuth = FirebaseAuth.getInstance();
 
-        Story story = new Story(title, description, System.currentTimeMillis(), inviteCode);
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        Story story = new Story(title, mAuth.getUid(),description, System.currentTimeMillis(), inviteCode);
 
         db.collection("stories")
                 .add(story)

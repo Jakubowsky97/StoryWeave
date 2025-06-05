@@ -1,36 +1,27 @@
 package com.example.storyweave.lobby;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-
 public class LobbyInformation {
-    private String language;
-    private String lobbycode;
-    private String creatorUserId;
+    private String storyId;
+    private String title;
+    private boolean isPrivate;
+    private String inviteCode;
+    private String creatorId;
 
-    public LobbyInformation(String language, String code) {
-        this.language = language;
-        this.lobbycode = code;
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            this.creatorUserId = user.getUid();
-        }
+    public LobbyInformation() {
+        // Required for Firestore
     }
 
-    public String getLanguage() {
-        return language;
+    public LobbyInformation(String storyId, String title, boolean isPrivate, String inviteCode, String creatorId) {
+        this.storyId = storyId;
+        this.title = title;
+        this.isPrivate = isPrivate;
+        this.inviteCode = inviteCode;
+        this.creatorId = creatorId;
     }
 
-    public String getLobbycode() {
-        return lobbycode;
-    }
-
-    public String getCreatorUserId() {
-        return creatorUserId;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
+    public String getStoryId() { return storyId; }
+    public String getTitle() { return title; }
+    public boolean isPrivate() { return isPrivate; }
+    public String getInviteCode() { return inviteCode; }
+    public String getCreatorId() { return creatorId; }
 }
