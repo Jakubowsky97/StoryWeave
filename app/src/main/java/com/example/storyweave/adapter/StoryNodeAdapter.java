@@ -7,12 +7,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storyweave.R;
 import com.example.storyweave.model.StoryNode;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,6 +72,7 @@ public class StoryNodeAdapter extends ListAdapter<StoryNode, StoryNodeAdapter.St
         private final Button btnVote;
         private final Button btnAddBranch;
         private final Button btnShowBranches;
+        private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         public StoryNodeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,8 +86,22 @@ public class StoryNodeAdapter extends ListAdapter<StoryNode, StoryNodeAdapter.St
 
         void bind(StoryNode node, OnNodeActionListener listener) {
             textNodeContent.setText(node.getContent());
-            textNodeMeta.setText("Author: " + node.getAuthorId() + " • " + formatDate(node.getTimestamp()));
             textVotes.setText("Votes: " + node.getVotes());
+            textNodeMeta.setText("Author: loading... • " + formatDate(node.getTimestamp()));
+
+            // Pobierz nazwę użytkownika z Firestore
+            db.collection("users").document(node.getAuthorId())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String uname = documentSnapshot.getString("email");
+                            if (uname == null) uname = "Unknown";
+                            textNodeMeta.setText("Author: " + uname.split("@")[0] + " • " + formatDate(node.getTimestamp()));
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        textNodeMeta.setText("Author: Unknown • " + formatDate(node.getTimestamp()));
+                    });
 
             btnVote.setOnClickListener(v -> {
                 if (listener != null) {
