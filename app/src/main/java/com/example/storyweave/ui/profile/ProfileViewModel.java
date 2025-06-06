@@ -38,7 +38,7 @@
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            String uname = documentSnapshot.getString("username");
+                            String uname = documentSnapshot.getString("email").split("@")[0];
                             username.setValue(uname != null ? uname : "Unknown");
 
                             db.collection("stories")
