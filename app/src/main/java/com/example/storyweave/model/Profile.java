@@ -1,4 +1,4 @@
-package com.example.storyweave.ui.profile;
+package com.example.storyweave.model;
 
 import java.util.Date;
 

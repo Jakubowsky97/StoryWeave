@@ -16,6 +16,17 @@ import java.util.Date;
 import java.util.Locale;
 
 public class StoryAdapter extends ListAdapter<Story, StoryAdapter.StoryViewHolder> {
+
+    public interface OnItemClickListener {
+        void onItemClick(Story story);
+    }
+
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public StoryAdapter() {
         super(DIFF_CALLBACK);
     }
@@ -41,7 +52,14 @@ public class StoryAdapter extends ListAdapter<Story, StoryAdapter.StoryViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull StoryViewHolder holder, int position) {
-        holder.bind(getItem(position));
+        Story story = getItem(position);
+        holder.bind(story);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(story);
+            }
+        });
     }
 
     static class StoryViewHolder extends RecyclerView.ViewHolder {

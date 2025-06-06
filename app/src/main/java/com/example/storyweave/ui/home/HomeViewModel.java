@@ -30,10 +30,12 @@ public class HomeViewModel extends ViewModel {
                     for (DocumentSnapshot doc : value.getDocuments()) {
                         Story story = doc.toObject(Story.class);
                         if (story != null) {
+                            story.setId(doc.getId());
                             stories.add(story);
                         }
                     }
                     storyList.setValue(stories);
                 });
     }
+
 }

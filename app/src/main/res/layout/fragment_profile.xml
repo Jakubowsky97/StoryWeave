@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.storyweave.ui.profile.ProfileViewModel" />
+            type="com.example.storyweave.ui.profile.ProfileViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
