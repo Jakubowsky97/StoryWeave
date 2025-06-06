@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textNodeContent"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Content" />
+
+    <TextView
+        android:id="@+id/textNodeMeta"
+        android:textSize="12sp"
+        android:textColor="#666"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Author &amp; Timestamp" />
+
+    <TextView
+        android:id="@+id/textVotes"
+        android:textSize="12sp"
+        android:textColor="#888"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Votes: 0" />
+</LinearLayout>

@@ -14,5 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">#FFFFFF</item>
         <item name="colorOnBackground">#000000</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
