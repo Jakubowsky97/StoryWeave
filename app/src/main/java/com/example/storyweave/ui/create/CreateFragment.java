@@ -3,6 +3,7 @@ package com.example.storyweave.ui.create;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.storyweave.databinding.FragmentCreateBinding;
+import com.example.storyweave.lobby.LobbyActivity;
 
 public class CreateFragment extends Fragment {
 
@@ -24,13 +26,6 @@ public class CreateFragment extends Fragment {
         binding = FragmentCreateBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this).get(CreateViewModel.class);
 
-        setupListeners();
-        setupObservers();
-
-        return binding.getRoot();
-    }
-
-    private void setupListeners() {
         binding.btnCreate.setOnClickListener(v -> {
             String title = binding.inputTitle.getText().toString().trim();
             String description = binding.inputDescription.getText().toString().trim();
@@ -41,28 +36,29 @@ public class CreateFragment extends Fragment {
             }
 
             viewModel.createStory(title, description);
+
+            viewModel.getCreateSuccess().observe(getViewLifecycleOwner(), success -> {
+                if (success) {
+                    Toast.makeText(getContext(), "Story created successfully", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            viewModel.getCreatedStoryId().observe(getViewLifecycleOwner(), storyId -> {
+                if (storyId != null) {
+                    String inviteCode = viewModel.getGeneratedInviteCode().getValue();
+
+                    Intent intent = new Intent(requireContext(), LobbyActivity.class);
+                    intent.putExtra("storyId", storyId);
+                    intent.putExtra("inviteCode", inviteCode);
+                    startActivity(intent);
+                    requireActivity().finish();
+                }
+            });
         });
 
-        binding.btnCopyCode.setOnClickListener(v -> {
-            String code = binding.textInviteCode.getText().toString();
-            ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("Invite Code", code);
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(requireContext(), "Invite code copied!", Toast.LENGTH_SHORT).show();
-        });
+        return binding.getRoot();
     }
 
-    private void setupObservers() {
-        viewModel.getGeneratedInviteCode().observe(getViewLifecycleOwner(), code -> {
-            binding.textInviteCode.setText(code);
-        });
-
-        viewModel.getCreateSuccess().observe(getViewLifecycleOwner(), success -> {
-            if (success) {
-                binding.inviteCodeLayout.setVisibility(View.VISIBLE);
-            }
-        });
-    }
 
     @Override
     public void onDestroyView() {

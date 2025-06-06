@@ -32,28 +32,4 @@
         android:text="Create"
         android:layout_marginTop="24dp" />
 
-    <LinearLayout
-        android:id="@+id/inviteCodeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="24dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:id="@+id/textInviteCode"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="CODE123"
-            android:textStyle="bold"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/btnCopyCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Copy" />
-    </LinearLayout>
 </LinearLayout>

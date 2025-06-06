@@ -19,6 +19,7 @@ public class CreateViewModel extends ViewModel {
     private FirebaseAuth mAuth;
     private final MutableLiveData<Boolean> createSuccess = new MutableLiveData<>(false);
     private final MutableLiveData<String> generatedInviteCode = new MutableLiveData<>();
+    private final MutableLiveData<String> createdStoryId = new MutableLiveData<>();
 
     public LiveData<Boolean> getCreateSuccess() {
         return createSuccess;
@@ -28,6 +29,10 @@ public class CreateViewModel extends ViewModel {
         return generatedInviteCode;
     }
 
+    public LiveData<String> getCreatedStoryId() {
+        return createdStoryId;
+    }
+
     public void createStory(String title, String description) {
         String inviteCode = generateInviteCode();
         generatedInviteCode.setValue(inviteCode);
@@ -35,11 +40,14 @@ public class CreateViewModel extends ViewModel {
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-        Story story = new Story(title, mAuth.getUid(),description, System.currentTimeMillis(), inviteCode);
+        Story story = new Story(title, mAuth.getUid(), description, System.currentTimeMillis(), inviteCode);
 
         db.collection("stories")
                 .add(story)
-                .addOnSuccessListener(documentReference -> createSuccess.setValue(true))
+                .addOnSuccessListener(documentReference -> {
+                    createSuccess.setValue(true);
+                    createdStoryId.setValue(documentReference.getId());
+                })
                 .addOnFailureListener(e -> Log.e("CreateViewModel", "Failed to create story", e));
     }
 
@@ -51,5 +59,9 @@ public class CreateViewModel extends ViewModel {
             code.append(chars.charAt(random.nextInt(chars.length())));
         }
         return code.toString();
+    }
+
+    public void goToLobby() {
+
     }
 }
