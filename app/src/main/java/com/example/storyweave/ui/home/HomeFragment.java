@@ -1,5 +1,6 @@
 package com.example.storyweave.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.storyweave.adapter.StoryAdapter;
 import com.example.storyweave.databinding.FragmentHomeBinding;
+import com.example.storyweave.lobby.LobbyActivity;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -28,6 +30,12 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         adapter = new StoryAdapter();
+        adapter.setOnItemClickListener(story -> {
+            Intent intent = new Intent(requireContext(), LobbyActivity.class);
+            intent.putExtra("storyId", story.getId());
+            intent.putExtra("inviteCode", story.getInviteCode());
+            startActivity(intent);
+        });
         binding.storyRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.storyRecyclerView.setAdapter(adapter);
 

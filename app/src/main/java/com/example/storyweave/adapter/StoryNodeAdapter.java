@@ -1,14 +1,17 @@
 package com.example.storyweave.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.storyweave.databinding.ItemStoryNodeBinding;
+import com.example.storyweave.R;
 import com.example.storyweave.model.StoryNode;
 
 import java.text.SimpleDateFormat;
@@ -17,8 +20,17 @@ import java.util.Locale;
 
 public class StoryNodeAdapter extends ListAdapter<StoryNode, StoryNodeAdapter.StoryNodeViewHolder> {
 
-    public StoryNodeAdapter() {
+    public interface OnNodeActionListener {
+        void onVoteClicked(StoryNode node);
+        void onAddBranchClicked(StoryNode node);
+        void onShowBranchesClicked(StoryNode node);
+    }
+
+    private OnNodeActionListener listener;
+
+    public StoryNodeAdapter(OnNodeActionListener listener) {
         super(DIFF_CALLBACK);
+        this.listener = listener;
     }
 
     private static final DiffUtil.ItemCallback<StoryNode> DIFF_CALLBACK = new DiffUtil.ItemCallback<StoryNode>() {
@@ -41,27 +53,55 @@ public class StoryNodeAdapter extends ListAdapter<StoryNode, StoryNodeAdapter.St
     @NonNull
     @Override
     public StoryNodeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemStoryNodeBinding binding = ItemStoryNodeBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new StoryNodeViewHolder(binding);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_story_node, parent, false);
+        return new StoryNodeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull StoryNodeViewHolder holder, int position) {
-        holder.bind(getItem(position));
+        holder.bind(getItem(position), listener);
     }
 
     static class StoryNodeViewHolder extends RecyclerView.ViewHolder {
-        private final ItemStoryNodeBinding binding;
+        private final TextView textNodeContent;
+        private final TextView textNodeMeta;
+        private final TextView textVotes;
+        private final Button btnVote;
+        private final Button btnAddBranch;
+        private final Button btnShowBranches;
 
-        public StoryNodeViewHolder(ItemStoryNodeBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        public StoryNodeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textNodeContent = itemView.findViewById(R.id.textNodeContent);
+            textNodeMeta = itemView.findViewById(R.id.textNodeMeta);
+            textVotes = itemView.findViewById(R.id.textVotes);
+            btnVote = itemView.findViewById(R.id.btnVote);
+            btnAddBranch = itemView.findViewById(R.id.btnAddBranch);
+            btnShowBranches = itemView.findViewById(R.id.btnShowBranches);
         }
 
-        void bind(StoryNode node) {
-            binding.textNodeContent.setText(node.getContent());
-            binding.textNodeMeta.setText("Author: " + node.getAuthorId() + " • " + formatDate(node.getTimestamp()));
-            binding.textVotes.setText("Votes: " + node.getVotes());
+        void bind(StoryNode node, OnNodeActionListener listener) {
+            textNodeContent.setText(node.getContent());
+            textNodeMeta.setText("Author: " + node.getAuthorId() + " • " + formatDate(node.getTimestamp()));
+            textVotes.setText("Votes: " + node.getVotes());
+
+            btnVote.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onVoteClicked(node);
+                }
+            });
+
+            btnAddBranch.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onAddBranchClicked(node);
+                }
+            });
+
+            btnShowBranches.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onShowBranchesClicked(node);
+                }
+            });
         }
 
         private String formatDate(long timestamp) {
